@@ -35,7 +35,23 @@ AddOutputFilterByType DEFLATE application/rss+xml
 AddOutputFilterByType DEFLATE application/javascript
 AddOutputFilterByType DEFLATE application/x-javascript
 AddOutputFilterByType DEFLATE image/svg+xml
-</code></pre></div></article></div><div class="column is-hidden-mobile"><div class=sidebar id=toc><div class="post post-toc" id=post-toc></div></div></div></div></div></div></section></div><footer class=footer><div class="content has-text-centered"><p>Powered by <a href=https://gohugo.io>Hugo</a>. Theme <a href=https://www.github.com/wlh320/hugo-theme-hulga>Hulga</a></p><p>Copyright © 2020 wlh. All rights reserved.</p></div></footer><script src=https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js></script><script>addBackToTop({diameter:42,backgroundColor:"#1793d0",innerHTML:'<svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>',textColor:'#fff'});</script><script type=text/javascript>document.addEventListener('DOMContentLoaded',()=>{const $navbarBurgers=Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'),0);if($navbarBurgers.length>0){$navbarBurgers.forEach(el=>{el.addEventListener('click',()=>{const target=el.dataset.target;const $target=document.getElementById(target);el.classList.toggle('is-active');$target.classList.toggle('is-active');});});}});</script><link id=hlcss rel=stylesheet type=text/css><script>function addCss(url){var link=document.getElementById('hlcss');link.href=url;}
+</code></pre></div><h2 id=reverse-proxying-web-sockets>Reverse Proxying Web Sockets</h2><h3 id=option-1>Option #1:</h3><p>Define a websocket proxy as below</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>&lt;VirtualHost *:443&gt;
+    ServerName public-server
+    ProxyPass /liveviewhandler/ ws://&lt;backend-server&gt;/liveviewhandler/
+    ProxyPassReverse /liveviewhandler/ wss://&lt;backend-server&gt;/liveviewhandler/
+    ProxyPass / https://&lt;backend-server&gt;/
+    ProxyPassReverse / https://&lt;backend-server&gt;/
+    ProxyRequests off
+&lt;/VirtualHost&gt;
+</code></pre></div><p>The challenge with the above approach is that every URL must be uniquely identified as a websocket only URL</p><h3 id=option-2>Option #2:</h3><p>Use rewriting to identify if a request is for Websocket or not. If for websocket then proxy to backend.</p><p>&lt;VirtualHost <em>:443>
+ServerName public-server
+RewriteEngine on
+RewriteCond %{HTTP:Upgrade} websocket [NC]
+RewriteCond %{HTTP:Connection} upgrade [NC]
+RewriteRule .</em> &ldquo;wss://%{REQUEST_URI}&rdquo; [P]
+ProxyPass / http:///
+ProxyPassReverse / http:///
+ProxyRequests off</p></article></div><div class="column is-hidden-mobile"><div class=sidebar id=toc><div class="post post-toc" id=post-toc></div></div></div></div></div></div></section></div><footer class=footer><div class="content has-text-centered"><p>Powered by <a href=https://gohugo.io>Hugo</a>. Theme <a href=https://www.github.com/wlh320/hugo-theme-hulga>Hulga</a></p><p>Copyright © 2020 wlh. All rights reserved.</p></div></footer><script src=https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js></script><script>addBackToTop({diameter:42,backgroundColor:"#1793d0",innerHTML:'<svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>',textColor:'#fff'});</script><script type=text/javascript>document.addEventListener('DOMContentLoaded',()=>{const $navbarBurgers=Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'),0);if($navbarBurgers.length>0){$navbarBurgers.forEach(el=>{el.addEventListener('click',()=>{const target=el.dataset.target;const $target=document.getElementById(target);el.classList.toggle('is-active');$target.classList.toggle('is-active');});});}});</script><link id=hlcss rel=stylesheet type=text/css><script>function addCss(url){var link=document.getElementById('hlcss');link.href=url;}
 var darkcss="https://adityakeyal.github.io/css/monokailight.css"
 var lightcss="https://adityakeyal.github.io/css/monokailight.css"
 if(window.matchMedia('(prefers-color-scheme)').media==='not all'){addCss(lightcss);}else if(window.matchMedia("(prefers-color-scheme: dark)").matches){addCss(darkcss);}else{addCss(lightcss);}
