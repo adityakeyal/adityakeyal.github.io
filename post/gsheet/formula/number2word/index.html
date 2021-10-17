@@ -24,24 +24,24 @@ When using in Google sheets, you just need to call the below function:
     <span style=color:#75715e>// crores
 </span><span style=color:#75715e></span>    <span style=color:#66d9ef>if</span>(<span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>&gt;=</span><span style=color:#ae81ff>10000000</span>){
         <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>croresAmount</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>/</span><span style=color:#ae81ff>10000000</span>;
-        <span style=color:#a6e22e>word</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>numbers2Word</span>(<span style=color:#a6e22e>croresAmount</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; crores &#34;</span>
+        <span style=color:#a6e22e>word</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>number2Word</span>(<span style=color:#a6e22e>croresAmount</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; crores &#34;</span>
         <span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>=</span><span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>%</span><span style=color:#ae81ff>10000000</span>;
     }
     <span style=color:#75715e>//lacs
 </span><span style=color:#75715e></span>    <span style=color:#66d9ef>if</span>(<span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>&gt;=</span><span style=color:#ae81ff>100000</span>){
         <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>lacsAmount</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>/</span><span style=color:#ae81ff>100000</span>;
-        <span style=color:#a6e22e>word</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>numbers2Word</span>(<span style=color:#a6e22e>lacsAmount</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; lacs &#34;</span>
+        <span style=color:#a6e22e>word</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>number2Word</span>(<span style=color:#a6e22e>lacsAmount</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; lacs &#34;</span>
         <span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>=</span><span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>%</span><span style=color:#ae81ff>100000</span>;
     }
     <span style=color:#66d9ef>if</span>(<span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>&gt;=</span><span style=color:#ae81ff>1000</span>){
         <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>thousandAmount</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>/</span><span style=color:#ae81ff>1000</span>;
-        <span style=color:#a6e22e>word</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>numbers2Word</span>(<span style=color:#a6e22e>thousandAmount</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; thousand &#34;</span>
+        <span style=color:#a6e22e>word</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>number2Word</span>(<span style=color:#a6e22e>thousandAmount</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; thousand &#34;</span>
         <span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>=</span><span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>%</span><span style=color:#ae81ff>1000</span>;
     }
     
     <span style=color:#66d9ef>if</span>(<span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>&gt;=</span><span style=color:#ae81ff>100</span>){
         <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>thousandAmount</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>/</span><span style=color:#ae81ff>100</span>;
-       <span style=color:#a6e22e>word</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>numbers2Word</span>(<span style=color:#a6e22e>thousandAmount</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; hundred &#34;</span>
+       <span style=color:#a6e22e>word</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>number2Word</span>(<span style=color:#a6e22e>thousandAmount</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; hundred &#34;</span>
        <span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>=</span><span style=color:#a6e22e>tokenizeNumber</span><span style=color:#f92672>%</span><span style=color:#ae81ff>100</span>;
     }
     
