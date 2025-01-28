@@ -1,0 +1,150 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=msapplication-TileImage content="/ms-icon-144x144.png"><meta name=msapplication-TileColor content="#1793d0"><meta name=theme-color content="#1793d0"><title>Prompt Library | Random thoughts of a Developer</title><meta property="og:title" content="Prompt Library - Random thoughts of a Developer"><meta property="og:type" content="article"><meta property="article:published_time" content="2025-01-27T17:34:55+08:00"><meta property="article:modified_time" content="2025-01-27T17:34:55+08:00"><meta name=keywords content="HTML,hugo,CSS"><meta name=description content="Prompt Library"><meta name=author content><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=96x96 href=/favicon-96x96.png><link rel=icon type=image/png sizes=192x192 href=/android-icon-192x192.png><link rel=apple-touch-icon sizes=57x57 href=/apple-icon-57x57.png><link rel=apple-touch-icon sizes=60x60 href=/apple-icon-60x60.png><link rel=apple-touch-icon sizes=72x72 href=/apple-icon-72x72.png><link rel=apple-touch-icon sizes=76x76 href=/apple-icon-76x76.png><link rel=apple-touch-icon sizes=114x114 href=/apple-icon-114x114.png><link rel=apple-touch-icon sizes=120x120 href=/apple-icon-120x120.png><link rel=apple-touch-icon sizes=144x144 href=/apple-icon-144x144.png><link rel=apple-touch-icon sizes=152x152 href=/apple-icon-152x152.png><link rel=apple-touch-icon sizes=180x180 href=/apple-icon-180x180.png><link rel=stylesheet type=text/css href=/css/hulga.min.css></head><body><div id=main><section class="hero is-primary shadow-hero is-bold"><div class=hero-head><nav class="navbar is-primary"><div class=container><div class=navbar-brand><a class=navbar-item href=https://adityakeyal.github.io/>Random thoughts of a Developer</a>
+<a role=button class=navbar-burger data-target=navMenu aria-label=menu aria-expanded=false><span aria-hidden=true></span><span aria-hidden=true></span><span aria-hidden=true></span></a></div><div class=navbar-menu id=navMenu><div class=navbar-end></div></div></div></nav></div><div class=hero-body><header class="container has-text-centered"><h1 class="title post-title">Prompt Library</h1><h2 class=subtitle><time class=post-meta>2025/01/27</time></h2><div class="tagbox post-meta"><span class=post-tag><a href=https://adityakeyal.github.io//tags/genai>#genAI</a></span></div></header></div></section><section class=section><div class=container><div class=columns><div class="column is-1 is-hidden-mobile"></div><div class="column is-8"><article class=content id=post-content><p>Date/time handling has always been messy in code, so I&rsquo;m letting Claude handle the chaos of parsing freeform scheduling requests and turning them into structured JSON. Did I cover most ways dates and times are mentioned when people schedule meetings?</p><pre><code>system_prompt = 
+Extract all temporal expressions from the text, including partial, informal, or business-context 
+information. 
+Return them in JSON format as an array of objects: [{&quot;type&quot;: &quot;TYPE&quot;, &quot;value&quot; : EXTRACTED VALUE&quot;, &quot;timezone&quot; &quot;TIMEZONE_IF_SPECIFIED&quot;}]
+
+Types can be: 
+- specific_date: Full or partial dates (e g. , '12/25/2024' , 'December 25th&quot;, &quot;the 25th , '25/12')
+- relative_day: Relative references (e.g., &quot;tomorrow&quot;, &quot;day after tomorrow&quot;, &quot;next week&quot;, &quot;in a few days&quot; ) 
+- weekday: Day mentions (e.g., &quot;this coming Monday&quot; , &quot;Monday&quot; &quot;next Tuesday&quot; , &quot;every Friday&quot; , 
+- month: Month references (e.g., &quot;in March&quot;, &quot;next month&quot;, &quot;end of April&quot;, &quot;early next month&quot;) 
+- time: Time mentions (e.g., &quot;at 2pm PST&quot;, &quot;morning EST&quot;, &quot;afternoon GMT&quot;, &quot;first thing , &quot;COB&quot;, &quot;EOD&quot;) 
+- duration: Duration mentions (e.g., &quot;for 2 hours&quot;, &quot;30 minutes&quot;, &quot;couple of hours&quot;, &quot;brief&quot;, &quot;quick&quot;) 
+- period: Time periods (e.g., &quot;this week&quot;, &quot;next quarter&quot;, &quot;holiday season&quot;, &quot;fiscal year&quot;, &quot;In couple of hours&quot; 
+- preference: Time preferences (e.g., &quot;whenever works&quot;, &quot;at your convenience&quot;, &quot;when you' re free&quot;, &quot;now&quot;, &quot;ASAP&quot;) 
+- recurring: Recurring patterns (e.g., &quot;every other week&quot;, &quot;daily&quot; , &quot;weekly&quot; , &quot;monthly&quot; )
+- fiscal: Fiscal year references (e.g., Q2 FY25&quot;, &quot;FY24&quot; , &quot;fiscal year end&quot; ) 
+- cultural: Cultural or seasonal references (e.g., &quot;during Ramadan&quot;, &quot;before Christmas&quot;, &quot;summer break&quot;, &quot;after holidays&quot;) 
+- milestone: Project-specific milestones (e.g., &quot;after launch&quot;, &quot;post-review&quot;, &quot;before deployment&quot;) 
+- business: Business process references (e.g., &quot;after standup&quot;, &quot;next sprint&quot;, &quot;post-refinement&quot;) 
+
+Rules: 
+1. Preserve original wording in the 'value' field but convert it to lowercase (retain qualifiers like &quot;early&quot; &quot;late&quot; &quot;every&quot;, or &quot;next&quot;). 
+2. If multiple temporal expressions are found, return each one as a separate object in the array. 
+3. Include timezone in the response when specified (e.g. , &quot;PST&quot;, &quot;EST&quot;, &quot;GMT&quot;, &quot;1ST&quot;). 
+4. Distinguish between fiscal and calendar year references. 
+5. Handle cultural and seasonal references with appropriate context. 
+6. Recognize project and business process milestones. 
+</code></pre><p>Prompt to generate test cases:</p><pre><code>l. Objective: Develop a suite of unit tests for the function to handle various input scenarios, including both valid and invalid inputs, as if the function is being called from an external client. Refactor the tests to consolidate cormon steps into a single 
+meth0d or utility function to enhance code maintainability and readability. 
+
+2. Test File: Create the unit tests in a separate file named test_parsing_operationsl.py. 
+
+3. Test Scenarios: 
+- valid Input: Test with a well-formed request containing a valid user query. 
+- Invalid Input: Test with an empty request body, malforned JSON, and unexpected data types. 
+- Error Handling: Ensure that appropriate error messages and status codes are returned for 
+invalid inputs. 
+- Test with at least 10 different user queries, with a mix of valid and invalid inputs including special character, escape characters, and edge cases. 
+
+4. Common Steps: 
+- Identify and refactor common steps in the test cases into a helper method to avoid redundancy and inprove clarity.
+
+5. Documentation: Document the test results in a table format with the following columns: 
+- Request Input: Description of the input used in the test. 
+- Response Output: Expected response from the function, including Status, code and message. 
+
+6. Output: The code should record the tests and print out the table as output of the test 
+suite run. Additionally, save the results to an Excel file with formatted tables and word 
+wrapping for better readability. 
+7. Example Results Table Format: 
+| Request Input | Response Output |
+|-----------------------------------|
+| Valid JSON with query | {&quot;status&quot;: &quot;success&quot;, &quot;UserQuery&quot; : &quot;example&quot; } | 
+| Empty request body | {&quot;status&quot;: &quot;error&quot;, &quot;message&quot; : &quot;Empty request body&quot; } | 
+| Malformed JSON | {&quot;status&quot;: &quot;error&quot;, &quot;message&quot; : &quot;JSON decode error &quot; } | 
+| Unexpected data type | {&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Error processing request&quot;} | 
+
+8. Tools and Libraries: 
+- use unittest for creating and running the tests. 
+- Use pandas and openpyxl for saving results to an Excel file. 
+- Use tabulate for printing the results table to the console
+</code></pre><p>A simple prompt to upgrade the quality of any piece of code you write.</p><pre><code>Make this code more resilient, readable and maintainable by incorporating: 
+Error handling with specific status codes 
+JSON response format 
+Logging for debugging 
+Input validation 
+Clear function documentation 
+Separation of concerns 
+Proper type hints 
+</code></pre><p>Prompt for performance evaluation:</p><pre><code>I am preparing for a performance review at my company where my 
+work is evaluated against three key attributes: 
+Attribute 1, 
+Attribute 2, 
+Attribute 3 
+
+As part of this process, I need to write a self-assessment that reflects 
+my contributions over the last two quarters. I would like this self-assessment to justify a high performance rating. 
+
+To help with this task, I will provide definitions for each of the three attributes and a summary of my projects and contributions. I would like 
+you to: 
+
+1. Assign each of my projects to one of the three attributes where it best fits. Please ensure that each project is only assigned once. 
+
+2. Write a positive and detailed self-assessment for each attribute, explaining how my projects demonstrate my proficiency in that area. Include specific examples and details. 
+
+3. Highlight the impact of my work by including quantifiable metrics where possible. If I haven't provided any, please suggest relevant 
+metrics that could be used to measure the impact of my work. 
+
+Here are the definitions of the attributes: 
+[Insert attribute definitions here] 
+
+
+And here are the projects and contributions I've made over the last two 
+quarters: 
+
+[Insert project summaries and contributions here]
+
+</code></pre><p>Create an onboarding plan for new hires</p><pre><code>Act as an experienced manager with over 20 years of experience 
+helping new hires onboard successfully into their roles as quickly as 
+possible. 
+I have just started a new job as a KeyAccount_Manager in the 
+MicrosoftBing _AdSalesteam, responsible for a portfolio of 50 clients 
+in the eCommerce industry, and my key performance indicator is US$ 
+10M in revenue this quarter. 
+Your task is to generate a 30-60-90 day onboarding plan for me using 
+the SMART.framewotk: Specific, Measurable, Achievable, Relevant, 
+and Time-Bound. 
+Match each goal with a metric so you can objectively measure my 
+success. Output in table format 
+</code></pre><p>Prepare Social Media Posts:</p><pre><code>You're a social media manager tasked with sharing long-form content 
+on Linkedln, but you've noticed that most people don't engage with 
+these posts or click the hyperlinks. 
+Creatively condense the below lengthy article into concise, valuable 
+summaries that capture the essence of the content and deliver 
+immediate value to your audience: 
+(paste the article) 
+</code></pre><p>Prepare a development plan</p><pre><code>Construct a detailed 30-60-90 day personal development plan that 
+not only focuses on job performance, but also showcases your 
+proactive nature and organizational skills using the SMART Framework 
+(Specific, Measurable, Actionable, Relevant, and Time-Bound). 
+Share your approach. Match each step or goal with a quantifiable 
+metric so you can measure success. 
+Output in table format. 
+</code></pre><p>Template format for coding:</p><pre><code>I need to implement [specific functionality] in [programming language].
+Key requirements:
+1. [Requirement 1]
+2. [Requirement 2]
+3. [Requirement 3]
+Please consider:
+- Error handling
+- Edge cases
+- Performance optimization
+- Best practices for [language/framework]
+Please do not unnecessarily remove any comments or code.
+Generate the code with clear comments explaining the logic.
+</code></pre><p>Code for review</p><pre><code>Please review the following code:
+[paste your code]
+Consider:
+1. Code quality and adherence to best practices
+2. Potential bugs or edge cases
+3. Performance optimizations
+4. Readability and maintainability
+5. Any security concerns
+Suggest improvements and explain your reasoning for each suggestion.
+</code></pre></article></div><div class="column is-hidden-mobile"><div class=sidebar id=toc><div class="post post-toc" id=post-toc></div></div></div></div></div></div></section></div><footer class=footer><div class="content has-text-centered"><p>Powered by <a href=https://gohugo.io>Hugo</a>. Theme <a href=https://www.github.com/wlh320/hugo-theme-hulga>Hulga</a></p><p>Copyright © 2020 wlh. All rights reserved.</p></div></footer><script src=https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js></script><script>addBackToTop({diameter:42,backgroundColor:"#1793d0",innerHTML:'<svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>',textColor:'#fff'});</script><script type=text/javascript>document.addEventListener('DOMContentLoaded',()=>{const $navbarBurgers=Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'),0);if($navbarBurgers.length>0){$navbarBurgers.forEach(el=>{el.addEventListener('click',()=>{const target=el.dataset.target;const $target=document.getElementById(target);el.classList.toggle('is-active');$target.classList.toggle('is-active');});});}});</script><link id=hlcss rel=stylesheet type=text/css><script>function addCss(url){var link=document.getElementById('hlcss');link.href=url;}
+var darkcss="https://adityakeyal.github.io/css/monokailight.css"
+var lightcss="https://adityakeyal.github.io/css/monokailight.css"
+if(window.matchMedia('(prefers-color-scheme)').media==='not all'){addCss(lightcss);}else if(window.matchMedia("(prefers-color-scheme: dark)").matches){addCss(darkcss);}else{addCss(lightcss);}
+window.matchMedia("(prefers-color-scheme: dark)").addListener(e=>e.matches&&addCss(darkcss));window.matchMedia("(prefers-color-scheme: light)").addListener(e=>e.matches&&addCss(lightcss));</script><script src=https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js></script><script>anchors.options={placement:'left',icon:'#'};anchors.add('.content h1, .content h2, .content h3');</script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css integrity="sha256-tn6hZ2YGDv0w1/DaFL4MiUoXuAVclrtFZs13ch3TB9M=" crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js integrity="sha256-1qhJwAgsSPVSSjlQVTewHS49eaoAbOz651dveUANVBI=" crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js integrity="sha256-oEuQVLwO5Ii6subChtLbrY5gx7NDRU+UJJ9jvvau+FI=" crossorigin=anonymous></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:true},{left:"\\[",right:"\\]",display:true},{left:"$",right:"$",display:false},{left:"\\(",right:"\\)",display:false}]});});</script><link rel=stylesheet type=text/css href=https://adityakeyal.github.io/css/toc.min.css><script src=https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js></script><script>tocbot.init({tocSelector:'.post-toc',contentSelector:'#post-content',headingSelector:'h1, h2, h3',collapseDepth:6,scrollSmooth:true,positionFixedSelector:'.post-toc',fixedSidebarOffset:273,});</script></body></html>
